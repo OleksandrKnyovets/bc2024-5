@@ -1,4 +1,7 @@
 const {program} = require('commander');
+const fs = require('fs');
+const path = require('path');
+const express = require('express');
 
 program
     .requiredOption('-h, --host <type>', 'server address')
@@ -17,6 +20,14 @@ app.use(express.urlencoded({ extended: true }));
 function getNotePath(name) {
     return path.join(cache, `${name}.txt`);
 }
+
+app.get('/notes/:name', (req, res) => {
+    const filePath = getNotePath(req.params.name);
+    if (!fs.existsSync(filePath)) return res.status(404).send('Not found');
+    const noteText = fs.readFileSync(filePath, 'utf8');
+    res.send(noteText);
+});
+
 
 // Запуск сервера
 app.listen(port, host, () => {
