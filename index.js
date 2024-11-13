@@ -28,6 +28,13 @@ app.get('/notes/:name', (req, res) => {
     res.send(noteText);
 });
 
+app.put('/notes/:name', (req, res) => {
+    const filePath = getNotePath(req.params.name);
+    if (!fs.existsSync(filePath)) return res.status(404).send('Not found');
+    fs.writeFileSync(filePath, req.body.text);
+    res.send('Note updated');
+});
+
 
 // Запуск сервера
 app.listen(port, host, () => {
