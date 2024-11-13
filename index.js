@@ -35,6 +35,14 @@ app.put('/notes/:name', (req, res) => {
     res.send('Note updated');
 });
 
+app.delete('/notes/:name', (req, res) => {
+    const filePath = getNotePath(req.params.name);
+    if (!fs.existsSync(filePath)) return res.status(404).send('Not found');
+    fs.unlinkSync(filePath);
+    res.send('Note deleted');
+});
+
+
 
 // Запуск сервера
 app.listen(port, host, () => {
