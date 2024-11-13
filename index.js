@@ -42,7 +42,28 @@ app.delete('/notes/:name', (req, res) => {
     res.send('Note deleted');
 });
 
+app.get('/notes', (req, res) => {
+    const notes = fs.readdirSync(cache).map(file => {
+        const name = path.parse(file).name;
+        const text = fs.readFileSync(path.join(cache, file), 'utf8');
+        return { name, text };
+    });
+    res.json(notes);
+});
 
+app.post('/write', (req, res) => {
+    const noteName = req.body.note_name;
+    const noteText = req.body.note;
+    const filePath = getNotePath(noteName);
+
+    if (fs.existsSync(filePath)) return res.status(400).send('Note already exists');
+    fs.writeFileSync(filePath, noteText);
+    res.status(201).send('Note created');
+});
+
+app.get('/UploadForm.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'UploadForm.html'));
+});
 
 // Запуск сервера
 app.listen(port, host, () => {
