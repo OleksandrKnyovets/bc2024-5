@@ -82,11 +82,11 @@ app.post('/write', upload.none(), (req, res) => {  // Використовуєм
 });
 
 // Рендеринг HTML-форми для створення нотатки
-app.get('/1', (req, res) => {
+app.get('/UploadForm.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'UploadForm.html'));  // Відправляємо HTML форму
 });
 
 // Запуск сервера на вказаному хості та порту
 app.listen(port, host, () => {
-    console.log(`Сервер працює на http://${host}:${port}/1`);  // Виводимо повідомлення про запуск сервера
+    console.log(`Сервер працює на http://${host}:${port}/UploadForm.html`);  // Виводимо повідомлення про запуск сервера
 });
